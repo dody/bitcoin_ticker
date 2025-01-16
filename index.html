@@ -36,6 +36,12 @@
       width: 1em; /* Scale the image relative to the font size */
       height: auto;
     }
+    .price.up {
+      color: #60ff60; /* Soft green */
+    }
+    .price.down {
+      color: #ff6666; /* Soft red */
+    }
   </style>
 </head>
 <body>
@@ -66,13 +72,13 @@
         // Flash effect when the price changes
         if (lastPrice !== null) {
           if (parseFloat(price) > lastPrice) {
-            // Price has gone up, flash green
-            priceElement.style.color = 'green';
-            setTimeout(() => priceElement.style.color = 'white', 500);
+            // Price has gone up, flash soft green
+            priceElement.classList.add('up');
+            setTimeout(() => priceElement.classList.remove('up'), 500);
           } else if (parseFloat(price) < lastPrice) {
-            // Price has gone down, flash red
-            priceElement.style.color = 'red';
-            setTimeout(() => priceElement.style.color = 'white', 500);
+            // Price has gone down, flash soft red
+            priceElement.classList.add('down');
+            setTimeout(() => priceElement.classList.remove('down'), 500);
           }
         }
 
