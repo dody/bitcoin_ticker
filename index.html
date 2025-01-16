@@ -67,8 +67,8 @@
 
         // Look for BTCUSDT mark price stream
         if (message.stream === "btcusdt@markPrice") {
-          const price = parseFloat(message.data.p); // Extract the price
-          const formattedPrice = Number(price.toFixed(0)).toLocaleString(); // Format price
+          const price = parseFloat(message.data.p).toFixed(0); // Extract the price
+          const formattedPrice = Number(price).toLocaleString(); // Format price
 
           // Update the price display
           const priceElement = document.getElementById("price");
