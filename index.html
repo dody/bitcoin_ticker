@@ -73,11 +73,11 @@
           if (parseFloat(price) > lastPrice) {
             // Price has gone up, flash soft green
             priceElement.classList.add('up');
-            setTimeout(() => priceElement.classList.remove('up'), 500);
+            setTimeout(() => priceElement.classList.remove('up'), 700);
           } else if (parseFloat(price) < lastPrice) {
             // Price has gone down, flash soft red
             priceElement.classList.add('down');
-            setTimeout(() => priceElement.classList.remove('down'), 500);
+            setTimeout(() => priceElement.classList.remove('down'), 700);
           }
         }
 
@@ -104,8 +104,8 @@
         console.error('Error fetching data:', error);
       }
 
-      // Wait for at least 500ms before the next fetch
-      setTimeout(fetchTradeInfo, 500);
+      // Wait for at least 1000ms before the next fetch
+      setTimeout(fetchTradeInfo, 1000);
     }
 
     // Start the fetching loop
