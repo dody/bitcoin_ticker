@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Binance</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      height: 100vh; /* Full viewport height */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Vertically center the content */
+      align-items: center; /* Horizontally center the content */
+    }
+    .price-container {
+      display: inline-flex;
+      align-items: center;
+      font-size: clamp(1em, 18vw, 40vh); /* Dynamic font size */
+      font-weight: bold; /* Make the price bold */
+    }
+    .price {
+      margin-left: 10px; /* Add space between image and price */
+      transition: color 0.3s ease-out;
+    }
+    .timestamp {
+      font-size: 0.8em;
+      /* font-size: clamp(1em, 18vw, 40vh); */
+      color: #222222; /* Much darker color for timestamp */
+    }
+    .btc-logo {
+      width: 1em; /* Scale the image relative to the font size */
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <p><span id="price-container" class="price-container">
+      <img id="btc-logo" src="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" class="btc-logo" alt="Bitcoin logo">
+      <span id="price" class="price">Loading...</span>
+    </span>
+  </p>
+  <!-- <p class="timestamp">Binance timestamp: <span id="timestamp">Loading...</span></p> -->
+
+  <script>
+    let lastPrice = null;
+
+    async function fetchTradeInfo() {
+      try {
+        const response = await fetch('https://api.binance.com/api/v3/trades?symbol=BTCUSDT&limit=1');
+        const data = await response.json();
+        const trade = data[0];
+
+        // Format price with commas and remove decimals
+        const price = parseFloat(trade.price).toFixed(0);
+        const formattedPrice = Number(price).toLocaleString();
+
+        // Get the price element and Bitcoin logo
+        const priceElement = document.getElementById('price');
+        const btcLogoElement = document.getElementById('btc-logo');
+        
+        // Flash effect when the price changes
+        if (lastPrice !== null) {
+          if (parseFloat(price) > lastPrice) {
+            // Price has gone up, flash green
+            priceElement.style.color = 'green';
+            setTimeout(() => priceElement.style.color = 'white', 500);
+          } else if (parseFloat(price) < lastPrice) {
+            // Price has gone down, flash red
+            priceElement.style.color = 'red';
+            setTimeout(() => priceElement.style.color = 'white', 500);
+          }
+        }
+
+        // Update the price
+        priceElement.textContent = `$${formattedPrice}`;
+
+        // Update the title with Binance and the price
+        document.title = `Binance $${formattedPrice}`;
+
+        // Store the current price as the last price for the next comparison
+        lastPrice = parseFloat(price);
+
+        // Convert timestamp to human-readable date in yyyy-mm-dd format without timezone
+        const timestampElement = document.getElementById('timestamp');
+        const date = new Date(trade.time);
+
+        // Format the date as yyyy-mm-dd and include the time
+        const formattedDate = date.toISOString().split('T')[0] + ' ' + 
+                              date.toLocaleTimeString('en-US', { hour12: false });
+
+        timestampElement.textContent = formattedDate;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+
+      // Wait for at least 500ms before the next fetch
+      setTimeout(fetchTradeInfo, 500);
+    }
+
+    // Start the fetching loop
+    fetchTradeInfo();
+  </script>
+</body>
+</html>
