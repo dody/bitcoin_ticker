@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="bitcoin.svg" sizes="any" type="image/svg+xml">
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/4/46/Bitcoin.svg" sizes="any" type="image/svg+xml">
   <title>Binance</title>
   <style>
     body {
@@ -54,7 +54,8 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const wsUrl = "wss://fstream.binance.com/stream?streams=bnbusdt@aggTrade/btcusdt@markPrice";
+      const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@markPrice";
+      // const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@kline_3m";
       let lastPrice = null;
 
       const socket = new WebSocket(wsUrl);
@@ -67,7 +68,9 @@
         const message = JSON.parse(event.data);
 
         // Look for BTCUSDT mark price stream
-        if (message.stream === "btcusdt@markPrice") {
+        if (true) {
+          // message.stream === "btcusdt@markPrice"
+
           const price = parseFloat(message.data.p).toFixed(0); // Extract the price
           const formattedPrice = Number(price).toLocaleString(); // Format price
 
