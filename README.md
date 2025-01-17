@@ -1,5 +1,5 @@
-# Bitcoin ticker
+# Bitcoin price tracker
 
-Web page to display price of last trade of BTC/USDT executed on Binance.
+A real-time web application that displays the current mark price of BTC/USDT on Binance
 
-**Run here:** [Bitcoin BTC/USDT ticker](https://dody.github.io/bitcoin_ticker/)
+**Run here:** [BTC/USDT Price Tracker](https://dody.github.io/bitcoin_ticker/)
