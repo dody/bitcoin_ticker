@@ -54,8 +54,9 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@markPrice";
-      // const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@kline_3m";
+      // const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@markPrice";
+      const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@miniTicker";
+      // const wsUrl = "wss://fstream.binance.com/stream?streams=btcusdt@kline_1d";
       let lastPrice = null;
 
       const socket = new WebSocket(wsUrl);
@@ -69,9 +70,18 @@
 
         // Look for BTCUSDT mark price stream
         if (true) {
-          // message.stream === "btcusdt@markPrice"
+          // console.log(message.stream);
 
-          const price = parseFloat(message.data.p).toFixed(0); // Extract the price
+          let price = 0;
+          if (message.stream === "btcusdt@miniTicker") {
+            price = parseFloat(message.data.c).toFixed(0); // Extract the price
+            console.log(message.data);
+          }
+
+          if (message.stream === "btcusdt@markPrice") {
+            price = parseFloat(message.data.p).toFixed(0); // Extract the price
+          }
+
           const formattedPrice = Number(price).toLocaleString(); // Format price
 
           // Update the price display
