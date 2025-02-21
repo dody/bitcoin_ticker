@@ -73,8 +73,10 @@
           // console.log(message.stream);
 
           let price = 0;
+          let price_open = 0;
           if (message.stream === "btcusdt@miniTicker") {
             price = parseFloat(message.data.c).toFixed(0); // Extract the price
+            price_open = parseFloat(message.data.o).toFixed(0); // Extract the price
             console.log(message.data);
           }
 
@@ -101,10 +103,14 @@
 
           // Update last price
           lastPrice = price;
+          let diff_24h_percent = ((price / price_open -1)*100).toFixed(2)
+          let sign = (diff_24h_percent >= 0 ? "+" : "");
+          let sign_2 = (diff_24h_percent >= 0 ? "△" : "▽");
+          
 
           // Update DOM elements
           priceElement.textContent = `$${formattedPrice}`;
-          document.title = `Binance $${formattedPrice}`;
+          document.title = `Binance $${formattedPrice} ${sign_2} ${sign}${diff_24h_percent}%`;
 
           // Update the timestamp
           const date = new Date(message.data.E); // Extract timestamp
@@ -113,7 +119,7 @@
 
           // const timestampElement = document.getElementById('timestamp');
           // timestampElement.textContent = formattedDate;
-          console.log(`time: ${formattedDate} price: $${price}`);
+          console.log(`time: ${formattedDate} price: $${price} diff_24h_percent: ${diff_24h_percent}%`);
         }
       };
 
